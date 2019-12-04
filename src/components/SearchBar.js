@@ -1,5 +1,10 @@
 import React from 'react'
 import SelectListGroup from './SelectListGroup.js'
+import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux'
+
+import { getWatchBrands } from '../actions/watchBrandActions'
 
 class SearchBar extends React.Component {
 
@@ -7,43 +12,50 @@ class SearchBar extends React.Component {
     searchBy: "",
     model: "",
     brand: "",
-    brands: []
+    modelChosen: false
   }
 
   onChange = (event) => {
     event.preventDefault();
 
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      modelChosen: true
     })
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/watch_brands')
-    .then(resp => resp.json())
-    .then(response => {
-      this.setState({
-        brands: response
-      })
-    })
+    this.props.getWatchBrands()
   }
 
   render () {
-    console.log(this.state.brands)
+    const { brands } = this.props.brands
     let moreOptions;
+    //
+    // const options = [
+    //   { label: 'Model', value: 'model'}
+    // ]
 
-    const options = [
-      this.state.brands.map((brand, index) => {
-        return {label: brand.name, value: brand.name, key: brand.index}
-      })
-    ]
+
+    let showBrands = () => {
+      let options = []
+      if(!brands) {
+         options.push({ label: 'Model', value: 'model'})
+      } else {
+        brands.map(brand =>
+          options.push({label: brand.name, value: brand.name, key: brand.index})
+        )
+      }
+      return options
+
+    }
 
     const selectMoreOptions = [
       { label: 'Model', value: 'model'}
     ]
 
 
-    if (this.state.brand) {
+    if (this.state.modelChosen) {
       moreOptions = (
         <div>
         <SelectListGroup
@@ -57,7 +69,6 @@ class SearchBar extends React.Component {
         </div>
         )
       }
-    console.log(options)
     return (
       <div className="search">
         <div className="dark-overlay search-inner text-light">
@@ -71,7 +82,7 @@ class SearchBar extends React.Component {
                           placeholder="Status"
                           name="brand"
                           value={this.state.brand}
-                          options={options[0]}
+                          options={showBrands()}
                           onChange={this.onChange}
                           info="Select Brand"
                           />
@@ -90,4 +101,12 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  brands: PropTypes.array.isRequired,
+  getWatchBrands: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  brands: state.brands
+})
+export default connect(mapStateToProps, { getWatchBrands })(SearchBar);
