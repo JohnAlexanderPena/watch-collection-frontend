@@ -1,6 +1,24 @@
 
 import {  GET_WATCH_BRANDS, GET_MODELS } from './types';
 
+const accentsTidy = (s) => {
+                        var r=s.toLowerCase();
+                        r = r.replace(new RegExp("\\s", 'g'),"");
+                        r = r.replace(new RegExp("[àáâãäå]", 'g'),"a");
+                        r = r.replace(new RegExp("æ", 'g'),"ae");
+                        r = r.replace(new RegExp("ç", 'g'),"c");
+                        r = r.replace(new RegExp("[èéêë]", 'g'),"e");
+                        r = r.replace(new RegExp("[ìíîï]", 'g'),"i");
+                        r = r.replace(new RegExp("ñ", 'g'),"n");
+                        r = r.replace(new RegExp("[òóôõö]", 'g'),"o");
+                        r = r.replace(new RegExp("œ", 'g'),"oe");
+                        r = r.replace(new RegExp("[ùúûü]", 'g'),"u");
+                        r = r.replace(new RegExp("[ýÿ]", 'g'),"y");
+                        r = r.replace(new RegExp("[&]", 'g'), "and");
+                        console.log(r)
+                                      // r = r.replace(new RegExp("\\W", 'g'),"");
+                        return r;
+                };
 
 export const getWatchBrands = () => dispatch => {
   fetch('http://localhost:3000/watch_brands')
@@ -15,6 +33,17 @@ export const getWatchBrands = () => dispatch => {
 
 
 export const getWatchModels = (model) => dispatch => {
+  let fixedModel = model.split(' ').join(' ')
+  let sortedModelName;
+  if(fixedModel.includes("-") || fixedModel.length > 1) {
+    sortedModelName = accentsTidy(fixedModel.replace(/\s+/g, '-'))
+    // || fixedModel.replace("&", '-and-')
+    // console.log(sortedModelName)
+  } else {
+    fixedModel = model
+  }
+
+  // console.log(sortedModelName)
   fetch(`http://localhost:3000/brand_watches/`, {
       method: "POST",
       headers: {
@@ -22,7 +51,7 @@ export const getWatchModels = (model) => dispatch => {
         "Content-Type":"application/json"
       },
       body: JSON.stringify({
-        model: model,
+        model: sortedModelName,
       })
     })
   .then(resp => resp.json())

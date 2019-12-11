@@ -99,7 +99,7 @@ class SearchBar extends React.Component {
                           {
                             moreOptions
                           }
-                          <input type="submit" value="Submit" className="btn btn-dark btn-block mt-4"/>
+                          <input type="submit" value="Search" className="btn btn-dark btn-block mt-4"/>
                     </form>
                 </div>
               </div>
