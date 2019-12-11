@@ -11,5 +11,5 @@ export default combineReducers({
   // errors: errorReducer,
   // profile: profileReducer,
   brands: watchBrandReducer,
-  models: watchModelReducer
+  models: watchModelReducer,
 })

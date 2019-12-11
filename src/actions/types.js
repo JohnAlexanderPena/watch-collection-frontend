@@ -1,2 +1,3 @@
 export const GET_WATCH_BRANDS = 'GET_WATCH_BRANDS'
 export const  GET_MODELS = 'GET_MODELS'
+export const  SET_SUBMODEL = 'SET_SUBMODEL'

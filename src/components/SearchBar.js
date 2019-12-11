@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux'
 
-import { getWatchBrands, getWatchModels } from '../actions/watchBrandActions'
+import { getWatchBrands, getWatchModels, setSubModel } from '../actions/watchBrandActions'
 
 class SearchBar extends React.Component {
 
@@ -14,7 +14,8 @@ class SearchBar extends React.Component {
     brand: "",
     modelChosen: false,
     chosenBrand: "",
-    models: []
+    models: [],
+    chosenModel: []
   }
 
   onChange = (event) => {
@@ -24,6 +25,14 @@ class SearchBar extends React.Component {
     })
     this.props.getWatchModels(event.target.value)
 
+  }
+
+  onModelSelect = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+      chosenModel: event.target.value,
+    })
+    this.props.setSubModel(event.target.value, this.props.history)
   }
 
   componentDidMount() {
@@ -40,15 +49,18 @@ class SearchBar extends React.Component {
        selectMoreOptions.push({label: 'Model', value: 'model'})
      } else {
         this.state.models.models.map((model, index) => {
-          selectMoreOptions.push({label: model.model, value: model.model, key: index})
+          selectMoreOptions.push({label: model.model, id: model.model, value: model.image_url, key: index})
         })
      }
      return selectMoreOptions
   }
 
+  onSubmit = () => {
+    this.props.history.push('/watches')
+  }
+
 
   render () {
-    console.log(this.state.models)
     const { brands } = this.props.brands
     let moreOptions;
 
@@ -66,6 +78,7 @@ class SearchBar extends React.Component {
     }
 
     if (this.state.modelChosen) {
+
       moreOptions = (
         <div>
         <SelectListGroup
@@ -73,7 +86,7 @@ class SearchBar extends React.Component {
             name="model"
             value={this.state.model}
             options={this.renderModels()}
-            onChange={this.onChange}
+            onChange={this.onModelSelect}
             info="Select Model"
             />
         </div>
@@ -87,7 +100,7 @@ class SearchBar extends React.Component {
               <div className="row">
                 <div className="col-md-8 m-auto">
                   <h1 className="disply-4 text-center">Search for Watches</h1>
-                   <form onSubmit={this.onSubmit}>
+                   <form onSubmit={() => this.onSubmit()}>
                       <SelectListGroup
                           placeholder="Status"
                           name="brand"
@@ -114,11 +127,13 @@ class SearchBar extends React.Component {
 SearchBar.propTypes = {
   brands: PropTypes.array.isRequired,
   getWatchBrands: PropTypes.func.isRequired,
-  getWatchModels: PropTypes.func.isRequired
+  getWatchModels: PropTypes.func.isRequired,
+  setSubModel: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
   brands: state.brands,
-  models: state.models
+  models: state.models,
+  subModel: state.subModel
 })
-export default connect(mapStateToProps, { getWatchBrands, getWatchModels })(SearchBar);
+export default connect(mapStateToProps, { getWatchBrands, getWatchModels, setSubModel })(SearchBar);

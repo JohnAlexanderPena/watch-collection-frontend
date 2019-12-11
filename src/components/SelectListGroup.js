@@ -5,6 +5,7 @@ import classnames from 'classnames'
 
 const SelectListGroup = ({
   name,
+  id,
   value,
   error,
   info,
@@ -12,7 +13,7 @@ const SelectListGroup = ({
   options
 }) => {
   const selectOptions = options.map(opt => (
-    <option key={opt.index} value={opt.value}>
+    <option key={opt.index} id={opt.id} value={opt.value}>
       {opt.label}
     </option>
   ))
