@@ -12,7 +12,7 @@ const SelectListGroup = ({
   options
 }) => {
   const selectOptions = options.map(opt => (
-    <option key={opt.label} value={opt.value}>
+    <option key={opt.index} value={opt.value}>
       {opt.label}
     </option>
   ))

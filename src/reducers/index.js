@@ -3,10 +3,13 @@ import { combineReducers } from 'redux';
 // import errorReducer from './errorReducer'
 // import profileReducer from './profileReducer'
 import watchBrandReducer from './watchBrandReducer'
+import watchModelReducer from './watchModelReducer'
+
 
 export default combineReducers({
   // auth: authReducer,
   // errors: errorReducer,
   // profile: profileReducer,
-  brands: watchBrandReducer
+  brands: watchBrandReducer,
+  models: watchModelReducer
 })

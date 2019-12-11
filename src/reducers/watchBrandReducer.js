@@ -2,7 +2,7 @@ import { GET_WATCH_BRANDS } from '../actions/types'
 
 
 const initialState = {
-  brands: []
+  brands: [],
 }
 
 export default function(state = initialState, action) {

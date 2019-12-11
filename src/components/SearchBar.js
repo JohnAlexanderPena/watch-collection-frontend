@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux'
 
-import { getWatchBrands } from '../actions/watchBrandActions'
+import { getWatchBrands, getWatchModels } from '../actions/watchBrandActions'
 
 class SearchBar extends React.Component {
 
@@ -12,30 +12,45 @@ class SearchBar extends React.Component {
     searchBy: "",
     model: "",
     brand: "",
-    modelChosen: false
+    modelChosen: false,
+    chosenBrand: "",
+    models: []
   }
 
   onChange = (event) => {
-    event.preventDefault();
-
     this.setState({
       [event.target.name]: event.target.value,
-      modelChosen: true
+      modelChosen: true,
     })
+    this.props.getWatchModels(event.target.value)
+
   }
 
   componentDidMount() {
     this.props.getWatchBrands()
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({models: nextProps.models})
+  }
+
+   renderModels = () => {
+     let selectMoreOptions = []
+     if(this.state.models.models === null || this.state.models.length <= 1) {
+       selectMoreOptions.push({label: 'Model', value: 'model'})
+     } else {
+        this.state.models.models.map((model, index) => {
+          selectMoreOptions.push({label: model.model, value: model.model, key: index})
+        })
+     }
+     return selectMoreOptions
+  }
+
+
   render () {
+    console.log(this.state.models)
     const { brands } = this.props.brands
     let moreOptions;
-    //
-    // const options = [
-    //   { label: 'Model', value: 'model'}
-    // ]
-
 
     let showBrands = () => {
       let options = []
@@ -50,11 +65,6 @@ class SearchBar extends React.Component {
 
     }
 
-    const selectMoreOptions = [
-      { label: 'Model', value: 'model'}
-    ]
-
-
     if (this.state.modelChosen) {
       moreOptions = (
         <div>
@@ -62,7 +72,7 @@ class SearchBar extends React.Component {
             placeholder="Status"
             name="model"
             value={this.state.model}
-            options={selectMoreOptions}
+            options={this.renderModels()}
             onChange={this.onChange}
             info="Select Model"
             />
@@ -103,10 +113,12 @@ class SearchBar extends React.Component {
 
 SearchBar.propTypes = {
   brands: PropTypes.array.isRequired,
-  getWatchBrands: PropTypes.func.isRequired
+  getWatchBrands: PropTypes.func.isRequired,
+  getWatchModels: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  brands: state.brands
+  brands: state.brands,
+  models: state.models
 })
-export default connect(mapStateToProps, { getWatchBrands })(SearchBar);
+export default connect(mapStateToProps, { getWatchBrands, getWatchModels })(SearchBar);
