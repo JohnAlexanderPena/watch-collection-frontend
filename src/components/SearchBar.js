@@ -1,6 +1,9 @@
 import React from 'react'
 import SelectListGroup from './SelectListGroup.js'
 import PropTypes from 'prop-types';
+import Watches from './Watches'
+import WatchGrid from './WatchGrid'
+
 
 import { connect } from 'react-redux'
 
@@ -15,14 +18,17 @@ class SearchBar extends React.Component {
     modelChosen: false,
     chosenBrand: "",
     models: [],
-    chosenModel: []
+    chosenModel: [],
+    showWatches: false
   }
 
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
       modelChosen: true,
+      showWatch: true
     })
+    console.log(event.target.value)
     this.props.getWatchModels(event.target.value)
 
   }
@@ -56,7 +62,9 @@ class SearchBar extends React.Component {
   }
 
   onSubmit = () => {
-    this.props.history.push('/watches')
+    this.setState({
+      showWatches: true
+    })
   }
 
 
@@ -93,14 +101,12 @@ class SearchBar extends React.Component {
         )
       }
     return (
-      <div className="search">
+      <div className="landing">
         <div className="dark-overlay search-inner text-light">
-          <div className= "create-profile">
             <div className="container">
-              <div className="row">
+              <div style={{marginTop: "20%"}}className="row">
                 <div className="col-md-8 m-auto">
                   <h1 className="disply-4 text-center">Search for Watches</h1>
-                   <form onSubmit={() => this.onSubmit()}>
                       <SelectListGroup
                           placeholder="Status"
                           name="brand"
@@ -112,12 +118,12 @@ class SearchBar extends React.Component {
                           {
                             moreOptions
                           }
-                          <input type="submit" value="Search" className="btn btn-dark btn-block mt-4"/>
-                    </form>
+                          <button type="button" onClick={this.onSubmit} className="btn btn-dark btn-block mt-4">Search!!</button><br/>
                 </div>
               </div>
+              { this.state.showWatches ? <Watches /> : null}
             </div>
-          </div>
+            <WatchGrid />
         </div>
       </div>
     )

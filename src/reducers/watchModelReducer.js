@@ -1,4 +1,4 @@
-import {  GET_MODELS, SET_SUBMODEL } from '../actions/types'
+import {  GET_MODELS, SET_SUBMODEL, GET_ROLEX_MODELS } from '../actions/types'
 
 
 const initialState = {
@@ -18,6 +18,11 @@ export default function(state = initialState, action) {
             ...state,
             subModel: state.models.filter(model => model.image_url === action.payload)
           }
+          case GET_ROLEX_MODELS:
+            return {
+              ...state,
+              models: state.models.filter(model => model.image_url === action.payload)
+            }
     default:
       return state;
   }

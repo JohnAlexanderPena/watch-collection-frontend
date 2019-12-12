@@ -8,7 +8,7 @@ class LandingPage extends React.Component {
   render () {
     return (
       <div>
-        <div className="landing">
+        <div className="home">
           <div className="dark-overlay landing-inner text-light">
             <div className="container">
               <div className="row">
