@@ -14,8 +14,9 @@ class RolexGrid extends React.Component {
   render () {
   let watchImage;
   if(this.props.models.models !== null) {
+
     watchImage = this.props.models.models.map(image =>
-         (
+         (    
              <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
                <img  style={rotate} src={image.image_url} alt={image.model}/><br/>
             </div>
