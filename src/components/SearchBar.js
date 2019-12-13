@@ -3,11 +3,13 @@ import SelectListGroup from './SelectListGroup.js'
 import PropTypes from 'prop-types';
 import Watches from './Watches'
 import WatchGrid from './WatchGrid'
+import RolexGrid from './RolexGrid'
+
 
 
 import { connect } from 'react-redux'
 
-import { getWatchBrands, getWatchModels, setSubModel } from '../actions/watchBrandActions'
+import { getWatchBrands, getWatchModels, setSubModel, getRolexModels } from '../actions/watchBrandActions'
 
 class SearchBar extends React.Component {
 
@@ -28,8 +30,14 @@ class SearchBar extends React.Component {
       modelChosen: true,
       showWatch: true
     })
-    console.log(event.target.value)
-    this.props.getWatchModels(event.target.value)
+    if(event.target.value === 'Rolex') {
+      this.setState({
+        chosenBrand: "Rolex"
+      })
+      this.props.getRolexModels()
+    } else {
+      this.props.getWatchModels(event.target.value)
+    }
 
   }
 
@@ -38,7 +46,8 @@ class SearchBar extends React.Component {
       [event.target.name]: event.target.value,
       chosenModel: event.target.value,
     })
-    this.props.setSubModel(event.target.value, this.props.history)
+      this.props.setSubModel(event.target.value, this.props.history)
+
   }
 
   componentDidMount() {
@@ -71,7 +80,7 @@ class SearchBar extends React.Component {
   render () {
     const { brands } = this.props.brands
     let moreOptions;
-
+    console.log(this.state.chosenBrand)
     let showBrands = () => {
       let options = []
       if(!brands) {
@@ -123,7 +132,7 @@ class SearchBar extends React.Component {
               </div>
               { this.state.showWatches ? <Watches /> : null}
             </div>
-            <WatchGrid />
+            {this.state.chosenBrand !== "Rolex" ? <WatchGrid /> : <RolexGrid/>}
         </div>
       </div>
     )
@@ -134,6 +143,7 @@ SearchBar.propTypes = {
   brands: PropTypes.array.isRequired,
   getWatchBrands: PropTypes.func.isRequired,
   getWatchModels: PropTypes.func.isRequired,
+  getRolexModels: PropTypes.func.isRequired,
   setSubModel: PropTypes.func.isRequired
 }
 
@@ -142,4 +152,4 @@ const mapStateToProps = (state) => ({
   models: state.models,
   subModel: state.subModel
 })
-export default connect(mapStateToProps, { getWatchBrands, getWatchModels, setSubModel })(SearchBar);
+export default connect(mapStateToProps, { getWatchBrands, getWatchModels, setSubModel, getRolexModels })(SearchBar);

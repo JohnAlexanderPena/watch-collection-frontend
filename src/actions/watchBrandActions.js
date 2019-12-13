@@ -1,5 +1,5 @@
 
-import {  GET_WATCH_BRANDS, GET_MODELS, SET_SUBMODEL } from './types';
+import {  GET_WATCH_BRANDS, GET_MODELS, SET_SUBMODEL, GET_ROLEX_MODELS } from './types';
 
 const accentsTidy = (s) => {
                         var r=s.toLowerCase();
@@ -65,5 +65,16 @@ export const setSubModel = (model) =>  dispatch => {
   dispatch({
     type: SET_SUBMODEL,
     payload: model
+  })
+}
+
+export const getRolexModels = (model) => dispatch => {
+  fetch("http://localhost:3000/rolex_models")
+  .then(resp => resp.json())
+  .then(models => {
+    dispatch({
+      type: GET_ROLEX_MODELS,
+      payload: models
+    })
   })
 }

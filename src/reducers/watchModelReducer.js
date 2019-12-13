@@ -21,7 +21,7 @@ export default function(state = initialState, action) {
           case GET_ROLEX_MODELS:
             return {
               ...state,
-              models: state.models.filter(model => model.image_url === action.payload)
+              models: action.payload
             }
     default:
       return state;
