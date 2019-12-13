@@ -1,12 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { connect } from 'react-redux'
+import {  getWatchBrands } from '../actions/watchBrandActions'
+import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
-import {  setSubModel, getWatchModels, getWatchBrands } from '../actions/watchBrandActions'
-// import { Link } from 'react-router-dom';
 const rotate = {
-  transform: "rotate(90deg)"
+  // transform: "rotate(90deg)",
+  borderRadius: "50%",
+ // display: "inline-block",
+ width: "50%",
+ height: "50%"
+ // position: "relative"
 }
 class RolexGrid extends React.Component {
 
@@ -16,9 +20,9 @@ class RolexGrid extends React.Component {
   if(this.props.models.models !== null) {
 
     watchImage = this.props.models.models.map(image =>
-         (    
+         (
              <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
-               <img  style={rotate} src={image.image_url} alt={image.model}/><br/>
+               <img  style={rotate} src={image.image_url} alt={image.model}/>
             </div>
         )
       )
@@ -31,10 +35,6 @@ class RolexGrid extends React.Component {
     )
   }
 }
-//
-// <div classname="search">
-//   <img style={{height: "35%", width: "18%", marginTop: "12%", marginbottom: "10%"}}src={this.props.models.subModel[0].image_url} class="rounded mx-auto d-block" alt="..."/>
-// </div>
 
 
 RolexGrid.propTypes = {

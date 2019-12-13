@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import {  setSubModel, getWatchModels, getWatchBrands } from '../actions/watchBrandActions'
-// import { Link } from 'react-router-dom';
+import {  getWatchBrands } from '../actions/watchBrandActions'
+import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
 class Watches extends React.Component {
 

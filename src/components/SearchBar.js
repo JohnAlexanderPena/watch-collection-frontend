@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import Watches from './Watches'
 import WatchGrid from './WatchGrid'
 import RolexGrid from './RolexGrid'
-
-
-
 import { connect } from 'react-redux'
-
-import { getWatchBrands, getWatchModels, setSubModel, getRolexModels } from '../actions/watchBrandActions'
+import {  getRolexSubModels, setSubModel, getWatchModels, getRolexModels } from '../actions/watchModelActions'
+import { getWatchBrands } from '../actions/watchBrandActions'
 
 class SearchBar extends React.Component {
 
@@ -21,7 +18,8 @@ class SearchBar extends React.Component {
     chosenBrand: "",
     models: [],
     chosenModel: [],
-    showWatches: false
+    showWatches: false,
+    showRolexSubModels: false
   }
 
   onChange = (event) => {
@@ -32,22 +30,32 @@ class SearchBar extends React.Component {
     })
     if(event.target.value === 'Rolex') {
       this.setState({
-        chosenBrand: "Rolex"
+        chosenBrand: "Rolex",
       })
       this.props.getRolexModels()
     } else {
       this.props.getWatchModels(event.target.value)
     }
-
   }
 
   onModelSelect = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-      chosenModel: event.target.value,
-    })
-      this.props.setSubModel(event.target.value, this.props.history)
+    let model;
+    if(this.state.brand === "Rolex") {
+      this.setState({
+        showRolexSubModels: true,
+        [event.target.name]: event.target.value,
+        chosenModel: event.target.value,
+      })
+      model = this.state.models.models.filter(model => model.image_url === event.target.value)
 
+      this.props.getRolexSubModels(model)
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value,
+        chosenModel: event.target.value,
+      })
+        this.props.setSubModel(event.target.value, this.props.history)
+    }
   }
 
   componentDidMount() {
@@ -59,16 +67,48 @@ class SearchBar extends React.Component {
   }
 
    renderModels = () => {
+     // debugger;
      let selectMoreOptions = []
+     //Check if models array is empty or null to show default select
      if(this.state.models.models === null || this.state.models.length <= 1) {
        selectMoreOptions.push({label: 'Model', value: 'model'})
-     } else {
-        this.state.models.models.map((model, index) => {
-          selectMoreOptions.push({label: model.model, id: model.model, value: model.image_url, key: index})
+     } else  {
+        this.state.models.models.map((model, index) => { //Map through models to push into options array
+          if(this.state.brand === "Rolex"){ //render Rolex models and push with differentrolex model properties
+            selectMoreOptions.push({label: model.rolex_model, id: model.rolex_url, value: model.image_url, key: index})
+          } else {
+            //push regular models into array
+            selectMoreOptions.push({label: model.model, id: model.model, value: model.image_url, key: index})
+          }
         })
      }
      return selectMoreOptions
   }
+
+  handleSubModels = (event) => {
+    event.preventDefault()
+    this.setState({
+      showRolexSubModels: true,
+      [event.target.name]: event.target.value,
+      chosenModel: event.target.value,
+    })
+    let model = this.state.models.models.filter(model => model.image_url === event.target.value)
+    debugger;
+    this.props.getRolexSubModels(model)
+  }
+
+
+  renderRolexSubmodels = () => {
+    let selectMoreOptions = []
+    if(this.props.models.rolexSubModels === null) {
+      selectMoreOptions.push({label: 'Model', value: 'model'})
+    } else  {
+    this.props.models.rolexSubModels.map((model, index) => {
+        selectMoreOptions.push({label: model.description, id: model.watch_url, value: model.name, key: index})
+    })
+  }
+    return selectMoreOptions
+ }
 
   onSubmit = () => {
     this.setState({
@@ -76,11 +116,12 @@ class SearchBar extends React.Component {
     })
   }
 
-
   render () {
+    
     const { brands } = this.props.brands
     let moreOptions;
-    console.log(this.state.chosenBrand)
+    let renderRolexSubModels;
+
     let showBrands = () => {
       let options = []
       if(!brands) {
@@ -91,11 +132,9 @@ class SearchBar extends React.Component {
         )
       }
       return options
-
     }
 
     if (this.state.modelChosen) {
-
       moreOptions = (
         <div>
         <SelectListGroup
@@ -103,12 +142,29 @@ class SearchBar extends React.Component {
             name="model"
             value={this.state.model}
             options={this.renderModels()}
-            onChange={this.onModelSelect}
+            onChange={this.handleSubModels}
             info="Select Model"
             />
         </div>
         )
       }
+
+      if(this.state.showRolexSubModels === true) {
+          renderRolexSubModels = (
+            <div>
+            <SelectListGroup
+                placeholder="Status"
+                name="model"
+                value={this.state.model}
+                options={this.renderRolexSubmodels()}
+                onChange={this.onModelSelect}
+                info="Select Model"
+                />
+            </div>
+            )
+      }
+
+
     return (
       <div className="landing">
         <div className="dark-overlay search-inner text-light">
@@ -127,6 +183,9 @@ class SearchBar extends React.Component {
                           {
                             moreOptions
                           }
+                          {
+                            renderRolexSubModels
+                          }
                           <button type="button" onClick={this.onSubmit} className="btn btn-dark btn-block mt-4">Search!!</button><br/>
                 </div>
               </div>
@@ -143,6 +202,8 @@ SearchBar.propTypes = {
   brands: PropTypes.array.isRequired,
   getWatchBrands: PropTypes.func.isRequired,
   getWatchModels: PropTypes.func.isRequired,
+  rolexSubModels: PropTypes.array.isRequired,
+  getRolexSubModels: PropTypes.func.isRequired,
   getRolexModels: PropTypes.func.isRequired,
   setSubModel: PropTypes.func.isRequired
 }
@@ -150,6 +211,7 @@ SearchBar.propTypes = {
 const mapStateToProps = (state) => ({
   brands: state.brands,
   models: state.models,
-  subModel: state.subModel
+  subModel: state.subModel,
+  rolexSubModels: state.rolexSubModels
 })
-export default connect(mapStateToProps, { getWatchBrands, getWatchModels, setSubModel, getRolexModels })(SearchBar);
+export default connect(mapStateToProps, { getWatchBrands, getRolexSubModels, getWatchModels, setSubModel, getRolexModels })(SearchBar);

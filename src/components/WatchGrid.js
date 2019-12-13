@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { connect } from 'react-redux'
-
-import {  setSubModel, getWatchModels, getWatchBrands } from '../actions/watchBrandActions'
-// import { Link } from 'react-router-dom';
+import {  getWatchBrands } from '../actions/watchBrandActions'
+import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
 class WatchGrid extends React.Component {
 
@@ -15,7 +13,7 @@ class WatchGrid extends React.Component {
     watchImage = this.props.models.models.map(image =>
          (
             <div className="column">
-              <img  src={image.image_url} alt={image.model}/>
+              <img  className="none" src={image.image_url} alt={image.model}/>
             </div>
         )
       )
