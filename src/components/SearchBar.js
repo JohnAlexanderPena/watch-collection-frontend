@@ -34,11 +34,20 @@ class SearchBar extends React.Component {
       })
       this.props.getRolexModels()
     } else {
+      this.setState({
+        [event.target.name]: event.target.value,
+        modelChosen: true,
+        showWatch: true,
+        showWatches: false,
+        showRolexSubModels: false,
+        chosenBrand: event.target.value
+      })
       this.props.getWatchModels(event.target.value)
     }
   }
 
   onModelSelect = (event) => {
+
     let model;
     if(this.state.brand === "Rolex") {
       this.setState({
@@ -92,8 +101,10 @@ class SearchBar extends React.Component {
       [event.target.name]: event.target.value,
       chosenModel: event.target.value,
     })
-    let model = this.state.models.models.filter(model => model.image_url === event.target.value)
-    debugger;
+    // debugger;
+    // console.log(event.target.__reactEventHandlers$2s2bsndse2u)
+    let model = this.state.models.models.filter(model => model.watch_url === event.target.firstElementChild.id)
+    // debugger;
     this.props.getRolexSubModels(model)
   }
 
@@ -117,7 +128,7 @@ class SearchBar extends React.Component {
   }
 
   render () {
-    
+
     const { brands } = this.props.brands
     let moreOptions;
     let renderRolexSubModels;
@@ -142,7 +153,7 @@ class SearchBar extends React.Component {
             name="model"
             value={this.state.model}
             options={this.renderModels()}
-            onChange={this.handleSubModels}
+            onChange={this.onModelSelect}
             info="Select Model"
             />
         </div>
@@ -157,8 +168,8 @@ class SearchBar extends React.Component {
                 name="model"
                 value={this.state.model}
                 options={this.renderRolexSubmodels()}
-                onChange={this.onModelSelect}
-                info="Select Model"
+                onChange={this.handleSubModels}
+                info="Select Rolex Sub Model"
                 />
             </div>
             )
@@ -186,7 +197,7 @@ class SearchBar extends React.Component {
                           {
                             renderRolexSubModels
                           }
-                          <button type="button" onClick={this.onSubmit} className="btn btn-dark btn-block mt-4">Search!!</button><br/>
+                          <button type="button" onClick={this.onSubmit} className="btn btn-dark btn-block mt-4">View Watch</button><br/>
                 </div>
               </div>
               { this.state.showWatches ? <Watches /> : null}

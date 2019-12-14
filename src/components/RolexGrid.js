@@ -14,23 +14,60 @@ const rotate = {
 }
 class RolexGrid extends React.Component {
 
+  renderWatches = () => {
+    debugger;
+    let watchImage;
+    if(this.props.models.rolexSubModels === null && this.props.models.models === null) {
+      watchImage = (
+                    <div style={{marginBottom: "10%", maxWidth: "20%"}} className="column">
+                        <img  style={rotate} src="null" alt="nil"/>
+                    </div>
+                  )
+    } else if (this.props.models.models !== null && this.props.models.rolexSubModels === null) {
+      watchImage = this.props.models.models.map(image =>
+           (
+               <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+                 <img  style={rotate} src={image.image_url} alt={image.model}/>
+              </div>
+          )
+        )
+    } else if (this.props.models.models !== null && this.props.models.rolexSubModels !== null){
+      watchImage = this.props.models.rolexSubModels.map(image =>
+           (
+               <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+                 <img  style={rotate} src={image.image_url} alt={image.description}/>
+              </div>
+          )
+        )
+    }
+    return watchImage
+  }
+
 
   render () {
-  let watchImage;
-  if(this.props.models.models !== null) {
 
-    watchImage = this.props.models.models.map(image =>
-         (
-             <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
-               <img  style={rotate} src={image.image_url} alt={image.model}/>
-            </div>
-        )
-      )
-  }
+  // let watchImage;
+  // if(this.props.models.models !== null && this.props.models.rolexSubModels.length < 1) {
+  //   watchImage = this.props.models.models.map(image =>
+  //        (
+  //            <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+  //              <img  style={rotate} src={image.image_url} alt={image.model}/>
+  //           </div>
+  //       )
+  //     )
+  // } else {(this.props.models.rolexSubModels.length > 1){
+  //   watchImage = this.props.models.rolexSubModels.map(image =>
+  //        (
+  //            <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+  //              <img  style={rotate} src={image.image_url} alt={image.description}/>
+  //           </div>
+  //       )
+  //     )
+  // }}
 
     return (
         <div style={{  marginTop: "5%"}}className="row">
-            {watchImage}
+            {this.renderWatches()}
         </div>
     )
   }

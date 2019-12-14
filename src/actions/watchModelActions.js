@@ -57,7 +57,7 @@ export const setSubModel = (model) =>  dispatch => {
 
 
 export const getRolexSubModels = (rolexModel) => dispatch => {
-  debugger;
+  // debugger;
   const rolexSubmodel = rolexModel[0].rolex_model.split(' ').join('-')
   fetch(`http://localhost:3000/rolex_model_watches/`, {
       method: "POST",
@@ -71,7 +71,7 @@ export const getRolexSubModels = (rolexModel) => dispatch => {
     })
     .then(resp => resp.json())
     .then(models => {
-      console.log(models)
+      // debugger;
       dispatch({
         type: GET_ROLEX_SUBMODELS,
         payload: models

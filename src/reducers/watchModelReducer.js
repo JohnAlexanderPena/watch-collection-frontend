@@ -28,7 +28,7 @@ export default function(state = initialState, action) {
         return {
           ...state,
           rolexSubModels: action.payload,
-          models: action.payload
+          // models: action.payload
         }
     default:
       return state;
