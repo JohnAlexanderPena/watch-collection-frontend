@@ -101,10 +101,7 @@ class SearchBar extends React.Component {
       [event.target.name]: event.target.value,
       chosenModel: event.target.value,
     })
-    // debugger;
-    // console.log(event.target.__reactEventHandlers$2s2bsndse2u)
     let model = this.state.models.models.filter(model => model.watch_url === event.target.firstElementChild.id)
-    // debugger;
     this.props.getRolexSubModels(model)
   }
 
@@ -128,7 +125,6 @@ class SearchBar extends React.Component {
   }
 
   render () {
-
     const { brands } = this.props.brands
     let moreOptions;
     let renderRolexSubModels;
@@ -202,7 +198,7 @@ class SearchBar extends React.Component {
               </div>
               { this.state.showWatches ? <Watches /> : null}
             </div>
-            {this.state.chosenBrand !== "Rolex" ? <WatchGrid /> : <RolexGrid/>}
+            {this.state.chosenBrand !== "Rolex" || this.props.brands.brands.length < 1 ? <WatchGrid /> : <RolexGrid/>}
         </div>
       </div>
     )

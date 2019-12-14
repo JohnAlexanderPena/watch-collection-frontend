@@ -5,28 +5,39 @@ import {  getWatchBrands } from '../actions/watchBrandActions'
 import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
 const rotate = {
-  // transform: "rotate(90deg)",
   borderRadius: "50%",
- // display: "inline-block",
- width: "50%",
- height: "50%"
- // position: "relative"
+ width: "100%",
+ height: "95%",
+ topMargin:"15px",
+
 }
+
+const column = {
+  padding:"5px",
+    margin:"50px",
+    marginLeft: "13%",
+     height: "55%",
+
+    topMargin:"15px",
+    flex: "0 0 calc(16.66% - 20px)",
+
+}
+
 class RolexGrid extends React.Component {
 
   renderWatches = () => {
-    debugger;
+    // debugger;
     let watchImage;
     if(this.props.models.rolexSubModels === null && this.props.models.models === null) {
       watchImage = (
-                    <div style={{marginBottom: "10%", maxWidth: "20%"}} className="column">
+                    <div style={column} className="">
                         <img  style={rotate} src="null" alt="nil"/>
                     </div>
                   )
     } else if (this.props.models.models !== null && this.props.models.rolexSubModels === null) {
       watchImage = this.props.models.models.map(image =>
            (
-               <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+               <div style={column} className="">
                  <img  style={rotate} src={image.image_url} alt={image.model}/>
               </div>
           )
@@ -34,7 +45,7 @@ class RolexGrid extends React.Component {
     } else if (this.props.models.models !== null && this.props.models.rolexSubModels !== null){
       watchImage = this.props.models.rolexSubModels.map(image =>
            (
-               <div style={{marginBottom: "10%", maxWidth: "20%"}}className="column">
+               <div style={column}className="">
                  <img  style={rotate} src={image.image_url} alt={image.description}/>
               </div>
           )
