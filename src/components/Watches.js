@@ -6,6 +6,11 @@ import { connect } from 'react-redux'
 import {  getWatchBrands } from '../actions/watchBrandActions'
 import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
+const styles = {
+  position: "fixed",
+    marginLeft: "45%"
+}
+
 class Watches extends React.Component {
 
   showImage = () => {
@@ -25,7 +30,7 @@ class Watches extends React.Component {
 
   render () {
     return (
-      <figure className="figure">
+      <figure style={styles}className="figure">
         <img src={this.showImage().image_url} className="figure-img img-fluid rounded" alt="nothing" />
         <figcaption style={{color: "white"}} className="figure-caption">{this.showImage().model}</figcaption>
      </figure>

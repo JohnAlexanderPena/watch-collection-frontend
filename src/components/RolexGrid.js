@@ -9,15 +9,19 @@ const rotate = {
  width: "100%",
  height: "95%",
  topMargin:"15px",
-
 }
 
 const column = {
-  padding:"5px",
+background: "-moz-linear-gradient(left, rgba(0,0,0,0.65) 0%, rgba(255,255,255,0) 48%, rgba(2,2,2,1) 100%)", /* FF3.6-15 */
+background: "-webkit-linear-gradient(left, rgba(0,0,0,0.65) 0%,rgba(255,255,255,0) 48%,rgba(2,2,2,1) 100%)", /* Chrome10-25,Safari5.1-6 */
+background: "linear-gradient(to right, rgba(0,0,0,0.65) 0%,rgba(255,255,255,0) 48%,rgba(2,2,2,1) 100%)", /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#020202',GradientType=1 )", /* IE6-9 */
+
+  padding:"10px",
     margin:"50px",
     marginLeft: "13%",
      height: "55%",
-
+     borderRadius: "50%",
     topMargin:"15px",
     flex: "0 0 calc(16.66% - 20px)",
 
@@ -30,14 +34,14 @@ class RolexGrid extends React.Component {
     let watchImage;
     if(this.props.models.rolexSubModels === null && this.props.models.models === null) {
       watchImage = (
-                    <div style={column} className="">
+                    <div style={column} className="col">
                         <img  style={rotate} src="null" alt="nil"/>
                     </div>
                   )
     } else if (this.props.models.models !== null && this.props.models.rolexSubModels === null) {
       watchImage = this.props.models.models.map(image =>
            (
-               <div style={column} className="">
+               <div style={column} className="col">
                  <img  style={rotate} src={image.image_url} alt={image.model}/>
               </div>
           )
@@ -45,7 +49,7 @@ class RolexGrid extends React.Component {
     } else if (this.props.models.models !== null && this.props.models.rolexSubModels !== null){
       watchImage = this.props.models.rolexSubModels.map(image =>
            (
-               <div style={column}className="">
+               <div style={column}className="col">
                  <img  style={rotate} src={image.image_url} alt={image.description}/>
               </div>
           )

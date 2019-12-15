@@ -7,6 +7,7 @@ import RolexGrid from './RolexGrid'
 import { connect } from 'react-redux'
 import {  getRolexSubModels, setSubModel, getWatchModels, getRolexModels } from '../actions/watchModelActions'
 import { getWatchBrands } from '../actions/watchBrandActions'
+import RolexSubModel from './RolexSubModel'
 
 class SearchBar extends React.Component {
 
@@ -19,7 +20,8 @@ class SearchBar extends React.Component {
     models: [],
     chosenModel: [],
     showWatches: false,
-    showRolexSubModels: false
+    showRolexSubModels: false,
+    rolexSubModel: null
   }
 
   onChange = (event) => {
@@ -72,7 +74,7 @@ class SearchBar extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({models: nextProps.models})
+    this.setState({models: nextProps.models, rolexSubModel: null})
   }
 
    renderModels = () => {
@@ -94,15 +96,16 @@ class SearchBar extends React.Component {
      return selectMoreOptions
   }
 
-  handleSubModels = (event) => {
-    event.preventDefault()
+  handleSubModels = (e) => {
+    // debugger;
+    e.preventDefault()
+    let index = e.target.selectedIndex;
+    let optionElement = e.target.childNodes[index].id
+    let model = this.props.models.rolexSubModels.filter(model => model.watch_url === optionElement)
+
     this.setState({
-      showRolexSubModels: true,
-      [event.target.name]: event.target.value,
-      chosenModel: event.target.value,
+      rolexSubModel : model,
     })
-    let model = this.state.models.models.filter(model => model.watch_url === event.target.firstElementChild.id)
-    this.props.getRolexSubModels(model)
   }
 
 
@@ -171,7 +174,7 @@ class SearchBar extends React.Component {
             )
       }
 
-
+    // console.log(this.props," <--- Props", this.state, "<----State")
     return (
       <div className="landing">
         <div className="dark-overlay search-inner text-light">
@@ -195,11 +198,14 @@ class SearchBar extends React.Component {
                           }
                           <button type="button" onClick={this.onSubmit} className="btn btn-dark btn-block mt-4">View Watch</button><br/>
                 </div>
+
               </div>
-              { this.state.showWatches ? <Watches /> : null}
             </div>
             {this.state.chosenBrand !== "Rolex" || this.props.brands.brands.length < 1 ? <WatchGrid /> : <RolexGrid/>}
+            { this.state.showWatches && this.state.chosenBrand !== "Rolex" ? <Watches /> : null}
         </div>
+        { this.state.rolexSubModel !== null ? <RolexSubModel model={this.state.rolexSubModel}/> : null}
+
       </div>
     )
   }
