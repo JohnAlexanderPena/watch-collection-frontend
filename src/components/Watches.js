@@ -8,7 +8,7 @@ import {  setSubModel, getWatchModels } from '../actions/watchModelActions'
 
 const styles = {
   position: "fixed",
-    marginLeft: "45%"
+    marginTop: "15%"
 }
 
 class Watches extends React.Component {

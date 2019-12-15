@@ -9,8 +9,10 @@ const rotate = {
    filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#020202',GradientType=1 )", /* IE6-9 */
    flex: "0 0 calc(16.66% - 20px)",
    padding:"10px",
-   topMargin:"50px",
+   // topMargin:"50px",
    height: "50%",
+   marginTop: "15%"
+
 }
 
 

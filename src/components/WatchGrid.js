@@ -44,7 +44,7 @@ class WatchGrid extends React.Component {
 
     return (
       // <div className="album py-5 bg-light">
-          <div className="row">
+          <div style={{marginLeft: "20%", marginRight: "20%"}}className="row">
             {this.watchImage()}
           </div>
       // </div>

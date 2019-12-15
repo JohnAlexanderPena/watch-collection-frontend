@@ -12,7 +12,6 @@ import RolexSubModel from './RolexSubModel'
 class SearchBar extends React.Component {
 
   state = {
-    searchBy: "",
     model: "",
     brand: "",
     modelChosen: false,
@@ -99,9 +98,9 @@ class SearchBar extends React.Component {
   handleSubModels = (e) => {
     // debugger;
     e.preventDefault()
-    let index = e.target.selectedIndex;
-    let optionElement = e.target.childNodes[index].id
-    let model = this.props.models.rolexSubModels.filter(model => model.watch_url === optionElement)
+    var index = e.target.selectedIndex;
+    var optionElement = e.target.childNodes[index].id
+    var model = this.props.models.rolexSubModels.filter(model => model.watch_url === optionElement)
 
     this.setState({
       rolexSubModel : model,
@@ -202,8 +201,8 @@ class SearchBar extends React.Component {
               </div>
             </div>
             {this.state.chosenBrand !== "Rolex" || this.props.brands.brands.length < 1 ? <WatchGrid /> : <RolexGrid/>}
-            { this.state.showWatches && this.state.chosenBrand !== "Rolex" ? <Watches /> : null}
         </div>
+        { this.state.showWatches && this.state.chosenBrand !== "Rolex" ? <Watches /> : null}
         { this.state.rolexSubModel !== null ? <RolexSubModel model={this.state.rolexSubModel}/> : null}
 
       </div>
